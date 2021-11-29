@@ -1,0 +1,10 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 250px !important;
+    max-height: 250px !important;
+}
