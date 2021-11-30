@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Section;
-use DB;
+
 
 class SectionController extends Controller
 {
@@ -17,9 +17,7 @@ class SectionController extends Controller
     {
 
         $sections = Section::all();
-        //dd($sections);
-
-        return view('libraryViewsContainer.library')->with('sections', $sections);
+        return view('libraryViewsContainer.admin')->with('sections', $sections);
     }
 
     /**
@@ -46,12 +44,19 @@ class SectionController extends Controller
         $filename = $file->getClientOriginalName();
         $file->move($destinationPath, $filename);
 
-        DB::table('section')->insert(['section_name' => $section_name, 'image_name' => $filename]);
+        // DB::table('section')->insert(['section_name' => $section_name, 'image_name' => $filename]);
+
+
+        //ORM
+        $sections = new Section;
+        $sections->section_name = $section_name;
+        $sections->image_name = $filename;
+        $sections->save();
         return redirect('admin');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource.d
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -81,9 +86,10 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //$section = Section::find($id);
-        //$section->section_name = 'test';
-        //$section->save();
+        $section_name = $request->input('section_name');
+        $section = Section::find($id);
+        $section->section_name = $section_name;
+        $section->save();
     }
 
     /**
@@ -95,7 +101,7 @@ class SectionController extends Controller
     public function destroy($id)
     {
 
-        //Section::find($id)->delete();
+        Section::find($id)->delete();
         //Section::destroy();
     }
 }
