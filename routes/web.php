@@ -16,5 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::resource("/", "SectionController");
-Route::get("/admin", "SectionController@index");
+
+Route::resource("/library", "SectionController");
+
+Route::get('admin','SectionController@admin');
+
+Route::post('library/restore/{id}', 'SectionController@restore');

@@ -37,8 +37,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-
-        $section_name = $request->input('sectin_name');
+        $section_name = $request->input('section_name');
         $file =  $request->file('image');
         $destinationPath = 'images';
         $filename = $file->getClientOriginalName();
@@ -52,7 +51,7 @@ class SectionController extends Controller
         $sections->section_name = $section_name;
         $sections->image_name = $filename;
         $sections->save();
-        return redirect('admin');
+        return redirect('library');
     }
 
     /**
@@ -87,9 +86,15 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         $section_name = $request->input('section_name');
+
+
+
         $section = Section::find($id);
         $section->section_name = $section_name;
+
         $section->save();
+        return redirect('library');
+
     }
 
     /**
@@ -102,6 +107,20 @@ class SectionController extends Controller
     {
 
         Section::find($id)->delete();
+        return redirect('library');
+
         //Section::destroy();
+    }
+    public function admin()
+    {
+        $sections = Section::withTrashed()->get();
+        return view('libraryViewContainer.admin',['sections' =>$sections]);
+    }
+
+    public function restore($id)
+    {
+        $section =Section::onlyTrashed()->find($id);
+        $section->restore();
+        return redirect('admin');
     }
 }
