@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+  //     \App\Models\Section::insert(['section_name' => 'test', 'image_name' => '1.jpg']);
+  
+    factory('App\Section',100);   
     }
 }

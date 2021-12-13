@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource("/library", "SectionController");
 
-Route::get('admin','SectionController@admin');
+Route::resource("books" , "booksController");
+
+
+
+
 
 Route::post('library/restore/{id}', 'SectionController@restore');
+
+Route::post('library/delete-forever/{id}', 'SectionController@deleteForever');

@@ -24,28 +24,41 @@
     @if($sections != null)
     <table class="table table-border">
         <thead>
+
             <th>Section Name</th>
             <th>Total Books</th>
-            {{-- <th>Image</th> --}}
             <th>Update</th>
             <th>Delete</th>
+            <th>Show</th>
+            <th>Restore</th>
+            <th>Delete For Ever</th>
+
+
+
         </thead>
 
         <tbody>
             @foreach ($sections as $section)
-            @if($section->trashed())
-            <tr class="bg-danger">
+            {!! Form::open(["url" => "library/$section->id","method" => "patch"]) !!}
+
+            @if ($section->trashed())
+            <tr class="bg-secondary">
                 @else
-            <tr class="bg-light">
+            <tr class="bg-white">
                 @endif
 
-                <td>{{$section->section_name}}</td>
-                <td>{{$section->book_total}}</td>
-                {{-- <td> <img src="{{asset($section->image_name)}}" class="img-fluid" alt=""></td> --}}
+                <td>
+                    {!! Form::text('section_name',$section->section_name) !!}
 
-                {!! Form::open(["url" => "library/$section->id","method" => "patch"]) !!}
+                </td>
+                <td>
+                    {!! Form::text('book_total',$section->book_total) !!}
+                </td>
+
+
 
                 <td>
+                    {{-- Erorr Test On The Browser --}}
                     {!! Form::submit('Update',["class" => "btn btn-success"]) !!}
                 </td>
                 {!! Form::close() !!}
@@ -58,17 +71,25 @@
                 </td>
                 {!! Form::close() !!}
 
-                <td>
+                <td><a href="library/{{$section->id}}" class="btn btn-info">Show</a></td>
 
-                    @if($section->trashed())
+
+                @if ($section->trashed())
                 <td>
                     {!! Form::open(["url" => "library/restore/$section->id"]) !!}
-                    {!! Form::submit('Restore',["class" => "btn btn-ligth"]) !!}
+                    {!! Form::submit('Restore',["class" => "btn btn-warning"]) !!}
                     {!! Form::close() !!}
                 </td>
                 @endif
 
+
+                @if ($section->trashed())
+                <td>
+                    {!! Form::open(["url" => "library/delete-forever/$section->id"]) !!}
+                    {!! Form::submit('Delete For Ever',["class" => "btn btn-primary"]) !!}
+                    {!! Form::close() !!}
                 </td>
+                @endif
 
 
             </tr>
@@ -81,47 +102,6 @@
     @endif
 
 
-
-    <hr>
-    <div class="panel-default">
-        <div class="panel-heading">Manging sections </div>
-        <div class="panal-body">
-            <h2>Update section </h2>
-
-            @foreach($sections as $section)
-            {!! Form::open(["url" => "library/$section->id", "method"=>"patch"]) !!}
-            {!! Form::text("section_name" , $section->section_name) !!}
-            <br>
-            <div class="bg-dark text-white">
-                {{$section->book_total}}
-            </div>
-            {!! Form::submit('Update') !!}
-            {!! Form::close() !!}
-            @endforeach
-        </div>
-    </div>
-    <hr>
-
-
-    <div class="panel-default">
-        <div class="panel-heading">Manging sections </div>
-        <div class="panal-body">
-            <h2>Delete section </h2>
-
-
-
-            @foreach ($sections as $section)
-
-            {!! Form::open(["url" => "library/$section->id", "method"=>"delete"]) !!}
-            {!! Form::text("section_name" , $section->section_name) !!}
-
-
-            {!! Form::submit('Delete') !!}
-            {!! Form::close() !!}
-
-            @endforeach
-        </div>
-    </div>
 </div>
 
 @endsection

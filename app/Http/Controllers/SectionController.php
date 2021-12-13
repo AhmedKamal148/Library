@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use App\Models\Section;
 
 
@@ -16,7 +17,8 @@ class SectionController extends Controller
     public function index()
     {
 
-        $sections = Section::all();
+        // $sections = Section::all();
+        $sections = Section::withTrashed()->get();
         return view('libraryViewsContainer.admin')->with('sections', $sections);
     }
 
@@ -27,6 +29,7 @@ class SectionController extends Controller
      */
     public function create()
     {
+
     }
 
     /**
@@ -62,7 +65,12 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        //
+        $section = Section::find($id);
+        // dd($section);
+        $allBooks = DB::table('sections')->join('books','sections.id', '=' , 'books.section_id')->where('sections.id',$id)->get();
+
+        return view('libraryViewsContainer.books',compact('section',$section,'allBooks' ,$allBooks));
+        
     }
 
     /**
@@ -85,13 +93,15 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $section_name = $request->input('section_name');
+    
+        $section_name = $request->section_name;
+        $book_total= $request->book_total;
 
 
 
         $section = Section::find($id);
         $section->section_name = $section_name;
-
+        $section->book_total = $book_total;
         $section->save();
         return redirect('library');
 
@@ -103,24 +113,27 @@ class SectionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Section $library)
     {
+        $library->delete();
 
-        Section::find($id)->delete();
         return redirect('library');
 
-        //Section::destroy();
     }
-    public function admin()
-    {
-        $sections = Section::withTrashed()->get();
-        return view('libraryViewContainer.admin',['sections' =>$sections]);
-    }
+
 
     public function restore($id)
     {
-        $section =Section::onlyTrashed()->find($id);
+       
+        $section = Section::onlyTrashed()->find($id);
         $section->restore();
-        return redirect('admin');
+        return redirect()->back();
+    }
+
+    public function deleteForever($id)
+    {
+        $section = Section::onlyTrashed()->find($id);
+        $section->forceDelete();
+        return redirect()->back();
     }
 }

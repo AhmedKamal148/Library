@@ -14,4 +14,9 @@ class Section extends Model
     // protected $dates = ['deleted_at'];
     // protected $table = 'sections';
     // protected $primaryKey = 'id';
+
+//  public function books()
+//  {       
+//      return $this->hasMany("");
+//  }
 }
