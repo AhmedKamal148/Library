@@ -15,8 +15,8 @@ class Section extends Model
     // protected $table = 'sections';
     // protected $primaryKey = 'id';
 
-//  public function books()
-//  {       
-//      return $this->hasMany("");
-//  }
+ public function books()
+ {       
+     return $this->hasMany("App\Models\book","section_id","id");
+ }
 }

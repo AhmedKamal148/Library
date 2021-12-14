@@ -87,18 +87,32 @@ class booksController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
+        $author_id = 1;
+        $another_author = $request->another_author;
+        $author2 = DB::table('authors')
+                            ->where("first_name" ,$another_author)
+                            ->select("id")
+                            ->first();
+
+
+  
+
         $book_title = $request->book_title;
         $book_edition = $request->book_edition;
         $book_description = $request->book_description;
+        // $author_name =$request->author_name;
         $section_id = $request->section_id ;
-        DB::table("books")
+       $ID_BOOk = DB::table("books") 
         ->where("id" , $id)
-        ->update([
+        ->update
+        ->insertGetId([
             "book_title" =>$book_title,
             "book_edition"=>$book_edition ,
             "book_description"=>$book_description
         ]);
-
+        
         return redirect("library/$section_id");
 
     }
@@ -111,6 +125,8 @@ class booksController extends Controller
      */
     public function destroy(book $book)
     {
-    
+        $section_id = $book->section_id;
+        $book->delete();
+        return redirect("library/$section_id");
     }
 }

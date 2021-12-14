@@ -67,8 +67,9 @@ class SectionController extends Controller
     {
         $section = Section::find($id);
         // dd($section);
-        $allBooks = DB::table('sections')->join('books','sections.id', '=' , 'books.section_id')->where('sections.id',$id)->get();
+        // $allBooks = DB::table('sections')->join('books','sections.id', '=' , 'books.section_id')->where('sections.id',$id)->get();
 
+        $allBooks = $section->books;
         return view('libraryViewsContainer.books',compact('section',$section,'allBooks' ,$allBooks));
         
     }

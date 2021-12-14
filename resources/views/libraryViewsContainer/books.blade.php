@@ -27,6 +27,12 @@
             </td>
         </tr>
         <tr>
+            <td>Another Author</td>
+            <td>
+                {!! Form::text("another_author") !!}
+            </td>
+        </tr>
+        <tr>
             <td>{!! Form::submit("Add" , ["class" => "btn btn-primary"]) !!}</td>
         </tr>
 
@@ -68,6 +74,7 @@
                 <td>
                     {!! Form::textarea("book_description" ,$book->book_description) !!}
                 </td>
+
                 <td>
                     {!! Form::submit("Update" ,["class" => "btn btn-primary"]) !!}
                 </td>
